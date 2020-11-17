@@ -9,9 +9,11 @@ class Source {
     private val sourceNumber = number
 
     // private val generatedStrategy = abs(2 * log10(Math.random()) * 1000).toLong()
-    private var lambda = 3
-    //private val generatedStrategy = (1000 * (-1 / (lambda * ln(nextDouble())))).toLong()
-    private val generatedStrategy = (-1 / (3 * ln(Random.nextDouble()))*1000).toLong()
+    private var lambda = 1.3
+
+    // private val generatedStrategy = (-1 / (1.2 * ln(Random.nextDouble())) * 1000).toLong()
+    private val generatedStrategy = (-1 / (lambda * ln(1 - Random.nextDouble())) * 1000).toLong()
+
     private var timeEnd = -1L
     private var status = true
 
