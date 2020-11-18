@@ -1,3 +1,5 @@
+import java.io.BufferedWriter
+
 object ApplicationCalendar {
     private val applicationList = mutableListOf<Pair<Application, Event>>()
 
@@ -7,6 +9,10 @@ object ApplicationCalendar {
 
     fun printApplications() {
         applicationList.forEach { println("${it.first.source.getNumber()} ${it.first.time}  ${it.second}") }
+    }
+
+    override fun toString(): String {
+        return applicationList.toString()
     }
 
     fun findMinTime(event1: Event = Event.SOURCE, event2: Event = Event.SOURCE): Pair<Application, Event>? {
@@ -28,11 +34,21 @@ object ApplicationCalendar {
     }
 
     fun changeMinStatus(source: Event, buffer: Event): Application? {
-        val minApplication = applicationList.minBy { it.first.time }
+        //val minApplication = applicationList.minBy { it.first.time }
+        val minApplication = getMinTime(Event.SOURCE, Event.DEVICE)
         val index = applicationList.indexOf(minApplication)
         if (minApplication != null) {
             applicationList[index] = Pair(minApplication.first, Event.BUFFER)
         }
         return minApplication?.first
+    }
+
+    fun getPrintApplications(fileWrite: BufferedWriter) {
+        if (applicationList.isNotEmpty()) {
+            applicationList.forEach { it ->
+                fileWrite.write("App num = ${it.first.getNumber()} App source ${it.first.source.getNumber()} App time ${it.first.time}  App type ${it.second} \n")
+                fileWrite.flush()
+            }
+        }
     }
 }
