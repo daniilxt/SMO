@@ -1,9 +1,9 @@
 import java.io.File
 
 fun main() {
-    val buffer = Buffer(5)
+    val buffer = Buffer(3)
     val sources = List(3) { it -> Source() }
-    val devices = List(2) { it -> Device() }
+    val devices = List(2) { it -> Device(1.3) }
 
     val calendar = ApplicationCalendar
     var event = Event.SOURCE //bms1
@@ -36,15 +36,36 @@ fun main() {
     val fileWrite = File(fileName).bufferedWriter()
 
     while (true) {
+
         println("Time is $time")
         //  fileWrite.write("Time is $time\n  ${calendar.getPrintApplications()}")
         fileWrite.write("Time is $time\n")
         calendar.getPrintApplications(fileWrite)
         fileWrite.flush()
 
+        println("__CALENDAR__")
+        calendar.printApplications()
+        println("__END__")
         when (event) {
 
+            Event.SOURCE -> {
+               // println("BEFORE SOURCE ")
+               // calendar.printApplications()
+                sources.forEach { it ->
+                    if (time >= it.getEndTime()) {
+                        calendar.addApplication(it.generateApplication(time), Event.SOURCE)
+                    }
+                }
+                // get min application, then get time
+               time = calendar.getMinTime(Event.SOURCE, Event.DEVICE)?.first?.time ?: time
+                event = Event.DEVICE
+                //println("AFTER SOURCE ")
+               // calendar.printApplications()
+            }
+
             Event.BUFFER -> {
+                println(" BUFFER--- ")
+                buffer.printQueue()
                 val app = calendar.changeMinStatus(Event.SOURCE, Event.BUFFER)
                 if (!buffer.isFull()) {
                     if (app != null) {
@@ -52,12 +73,17 @@ fun main() {
                     }
                 } else {
                     if (app != null) {
+                        calendar.remove(app to Event.BUFFER)
                         buffer.pull(app)
                     }
                 }
                 event = Event.SOURCE
+              /*   println("AFTER BUFFER ")
+                calendar.printApplications()*/
             }
             Event.DEVICE -> {
+                //println("BEFORE DEVICE___ ")
+                //calendar.printApplications()
                 event = Event.SOURCE
                 time = calendar.getMinTime(Event.SOURCE, Event.DEVICE)?.first?.time ?: time
 
@@ -68,12 +94,17 @@ fun main() {
                             calendar.findMinTime()?.first
                         }
                         false -> {
-                            buffer.getNext()
+                            println("BEFORE BUFFER___ ")
+                            buffer.printQueue()
+                            val tmpApp = buffer.getNext()
+                            calendar.remove(tmpApp to Event.BUFFER)
+                            tmpApp //return
                         }
                     }
                     if (app != null) {
-                        devices[freeDevice - 1].handle(app)
+                        devices[freeDevice - 1].handle(app,time)
                         devices[freeDevice - 1].isFree = false
+                        app.time = devices[freeDevice-1].getEndTime()
                         calendar.addApplication(app, Event.DEVICE)
 
                     }
@@ -86,19 +117,12 @@ fun main() {
                     // println("Device number ${it.getNumber()} status ${it.isFree} handled applications ${it.countApplications()} ")
                     println("Device number ${it.getNumber()} status ${it.isFree} handled applications ${it.countApplications()} ")
                 }
-            }
-            Event.SOURCE -> {
-                sources.forEach { it ->
-                    if (time >= it.getEndTime()) {
-                        calendar.addApplication(it.generateApplication(time), Event.SOURCE)
-                    }
-                }
-                // get min application, then get time
-                time = calendar.getMinTime(Event.SOURCE, Event.DEVICE)?.first?.time ?: time
-                event = Event.DEVICE
+               // println("AFTER DEVICE___ ")
+                //calendar.printApplications()
             }
         }
         val read = readLine()
+
 
     }
 }

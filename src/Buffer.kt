@@ -1,4 +1,6 @@
-class Buffer(var capacity: Int) {
+import java.util.*
+
+class Buffer(private val capacity: Int) {
     private val source = Source(true)
     private val queue = Array(capacity) { Application(source, -1,true) }
     private val cleanValue = Application(source, -1,true)

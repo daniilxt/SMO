@@ -1,7 +1,7 @@
 import kotlin.math.ln
 import kotlin.random.Random
 
-class Device {
+class Device(private val lambda:Double) {
     init {
         number++
     }
@@ -15,16 +15,16 @@ class Device {
     private var timeEnd = -1L
     var isFree = true
 
+
     fun getNumber(): Int {
         return deviceNumber
     }
 
-    fun handle(app: Application) {
-        val lambda = 1.3
+    fun handle(app: Application,time:Long) {
         isFree = false
        // val x = (-1 / (1.4 * ln(Random.nextDouble())) * 1000).toLong()
         val x = (-1 / (lambda * ln(1- Random.nextDouble())) * 100).toLong()
-        timeEnd = app.time + x
+        timeEnd = time + x
         println("Handle application ${app.getNumber()} ${app.time}  time end = $timeEnd   x: $x")
         countApplications++
     }

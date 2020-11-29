@@ -51,4 +51,8 @@ object ApplicationCalendar {
             }
         }
     }
+
+    fun remove(pair: Pair<Application, Event>) {
+        applicationList.remove(pair)
+    }
 }
