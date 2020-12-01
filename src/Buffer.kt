@@ -1,9 +1,10 @@
 import java.util.*
+import kotlin.random.Random
 
 class Buffer(private val capacity: Int) {
-    private val source = Source(true)
-    private val queue = Array(capacity) { Application(source, -1,true) }
-    private val cleanValue = Application(source, -1,true)
+    private val source = Source(1.3, Random.nextDouble(), true)
+    private val queue = Array(capacity) { Application(source, -1, true) }
+    private val cleanValue = Application(source, -1, true)
     private var index = 0
     private var space = 0
 
@@ -35,7 +36,7 @@ class Buffer(private val capacity: Int) {
     }
 
     fun printQueue() {
-        queue.forEach { println(it) }
+        queue.forEach { println("App num: ${it.getNumber()} time=${it.time}, source:${it.source.getNumber()} ") }
     }
 
     fun getNext(): Application {
@@ -53,6 +54,10 @@ class Buffer(private val capacity: Int) {
 
     fun isFull(): Boolean {
         return space == capacity
+    }
+
+    fun getLast(): Application {
+        return queue[capacity - 1]
     }
 }
 /*

@@ -13,6 +13,7 @@ class Device(private val lambda:Double) {
     private var deviceNumber = number
     private var countApplications = 0L
     private var timeEnd = -1L
+    private var currentApp:Application? = null
     var isFree = true
 
 
@@ -22,8 +23,8 @@ class Device(private val lambda:Double) {
 
     fun handle(app: Application,time:Long) {
         isFree = false
-       // val x = (-1 / (1.4 * ln(Random.nextDouble())) * 1000).toLong()
-        val x = (-1 / (lambda * ln(1- Random.nextDouble())) * 100).toLong()
+        currentApp = app
+        val x = ((-1 / (lambda * ln(Random.nextDouble())))*100).toLong()
         timeEnd = time + x
         println("Handle application ${app.getNumber()} ${app.time}  time end = $timeEnd   x: $x")
         countApplications++
@@ -35,5 +36,10 @@ class Device(private val lambda:Double) {
 
     fun countApplications(): Long {
         return countApplications
+    }
+
+    fun clear():Application? {
+        timeEnd = 0
+        return currentApp
     }
 }

@@ -21,6 +21,9 @@ object ApplicationCalendar {
         applicationList.remove(app)
         return app
     }
+    fun checkMinTime(event1: Event = Event.SOURCE, event2: Event = Event.SOURCE): Pair<Application, Event>? {
+        return getMinTime(event1, event2)
+    }
 
     fun getMinTime(event1: Event = Event.SOURCE, event2: Event = Event.SOURCE): Pair<Application, Event>? {
         val eventList = listOf(event1, event2)
@@ -37,8 +40,8 @@ object ApplicationCalendar {
         //val minApplication = applicationList.minBy { it.first.time }
         val minApplication = getMinTime(Event.SOURCE, Event.DEVICE)
         val index = applicationList.indexOf(minApplication)
-        if (minApplication != null) {
-            applicationList[index] = Pair(minApplication.first, Event.BUFFER)
+        if (minApplication != null && minApplication.second!= buffer) {
+            applicationList[index] = Pair(minApplication.first, buffer)
         }
         return minApplication?.first
     }
