@@ -12,7 +12,6 @@ class Source(private val lambda: Double, private val tau: Double, isSystem: Bool
 
     private val sourceNumber = number
 
-    // private val generatedStrategy = (-1 / (lambda * ln(1 - Random.nextDouble())) * 100).toLong()
     private var timeEnd = -1L
     private var status = true
     private var countApplications = 0L
@@ -21,11 +20,9 @@ class Source(private val lambda: Double, private val tau: Double, isSystem: Bool
         return sourceNumber
     }
 
-
     fun generateApplication(time: Long): Application {
         //time + равномерное распределение
-        timeEnd = time + (lambda + tau * 1000).toLong()
-        //timeEnd = time + ((1 - exp(-lambda * Random.nextDouble())) * 1000).toLong()
+        timeEnd = time + ((lambda * tau) * 1000).toLong()
         val app = Application(this, timeEnd)
         println("Application ${app.getNumber()} from Source $sourceNumber will generated in time ${app.time}")
         countApplications++

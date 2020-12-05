@@ -46,9 +46,8 @@ class SMO(bufferCapacity: Int, sources: Int, devices: Int, lambda: Double) {
                 }
 
                 Event.BUFFER -> {
-                    //buffer.printQueue()
-                    val app = calendar.changeMinStatus(Event.SOURCE, Event.BUFFER)
                     time = calendar.getMinTime(Event.SOURCE, Event.DEVICE)?.first?.time ?: time
+                    val app = calendar.changeMinStatus(Event.SOURCE, Event.BUFFER)
                     if (!buffer.isFull()) {
                         if (app != null) {
                             buffer.add(app)
@@ -66,7 +65,6 @@ class SMO(bufferCapacity: Int, sources: Int, devices: Int, lambda: Double) {
 
                     event = Event.SOURCE
                     time = calendar.getMinTime(Event.SOURCE, Event.DEVICE)?.first?.time ?: time
-                    // val freeDevice: Int? = devices.find { time >= it.getEndTime() }?.getNumber()
                     val freeDevice: Int? = findDevice()
                     if (freeDevice != null) {
                         var flag = false
@@ -74,7 +72,6 @@ class SMO(bufferCapacity: Int, sources: Int, devices: Int, lambda: Double) {
                             true -> {
                                 flag = true
                                 calendar.getMinTime()?.first
-                                //calendar.findMinTime()?.first
                             }
                             false -> {
                                 println("BEFORE BUFFER___ ")
@@ -111,6 +108,29 @@ class SMO(bufferCapacity: Int, sources: Int, devices: Int, lambda: Double) {
         }
     }
 
+    fun runTestSMO() {
+/*        sources.forEach { it ->
+            if (time >= it.getEndTime()) {
+                buffer.add(it.generateApplication(time))
+            }
+        }*/
+/*
+        buffer.printQueue()
+        buffer.add(sources[1].generateApplication(time))
+      buffer.add(sources[0].generateApplication(time+2))
+        buffer.add(sources[0].generateApplication(time))
+        buffer.printQueue()
+        println("__")
+        buffer.getNext()
+        buffer.printQueue()
+        println("__")
+        buffer.getNext()
+        buffer.printQueue()
+        println("__")
+        buffer.getNext()
+        buffer.printQueue()*/
+    }
+
     private fun printCalendar(fileWrite: BufferedWriter) {
         fileWrite.write("--START--\n")
         fileWrite.write("Time is $time\n")
@@ -130,9 +150,6 @@ class SMO(bufferCapacity: Int, sources: Int, devices: Int, lambda: Double) {
             println("Device number ${it.getNumber()} status ${it.isFree} handled applications ${it.countApplications()} TIME END: ${it.getEndTime()} ")
         }
         buffer.printQueue()
-        sources.forEach { it ->
-            println("Source number ${it.getNumber()} status ${it.isFree()} created applications ${it.countApplications()} ")
-        }
         println("--END STAT-- \n")
     }
 
