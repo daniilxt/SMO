@@ -1,11 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainApplication">
-    <children>
-        <Label layoutX="255.0" layoutY="125.0" prefHeight="83.0" prefWidth="171.0" text="TTTTTTEEEESSSTTT" />
-    </children>
+<?import javafx.scene.control.TextField?>
+<AnchorPane prefHeight="755.0" prefWidth="994.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+   <children>
+      <TabPane prefHeight="400.0" prefWidth="600.0" style="-fx-back: #2e3348;" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <tabs>
+          <Tab id="tab_menu" text="Menu">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="233.0" prefWidth="390.0">
+                     <children>
+                        <AnchorPane layoutX="687.0" layoutY="180.0" prefHeight="241.0" prefWidth="240.0" style="-fx-background-color: #414a4c;">
+                           <children>
+                              <TextField id="devices_lambda" layoutX="77.0" layoutY="173.0" />
+                              <TextField id="devices_count" layoutX="77.0" layoutY="128.0" />
+                              <Label layoutX="80.0" layoutY="14.0" style="-fx-focus-traversable: #FF00FF;" text="Devices" textFill="#f7fffe">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="14.0" layoutY="130.0" style="-fx-focus-traversable: #FF00FF;" text="Count" textFill="#f7fffe">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="14.0" layoutY="175.0" style="-fx-focus-traversable: #FF00FF;" text="Lambda" textFill="#f7fffe">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="396.0" layoutY="179.0" prefHeight="243.0" prefWidth="239.0" style="-fx-background-color: #414a4c;">
+                           <children>
+                              <TextField id="sources_count" layoutX="76.0" layoutY="119.0" />
+                              <Label layoutX="78.0" layoutY="14.0" style="-fx-focus-traversable: #FF00FF;" text="Sources" textFill="#f7fffe">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="9.0" layoutY="121.0" style="-fx-focus-traversable: #FF00FF;" text="Count" textFill="#f7fffe">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <TextField id="sources_lambda" layoutX="78.0" layoutY="167.0" />
+                              <Label layoutX="9.0" layoutY="169.0" style="-fx-focus-traversable: #FF00FF;" text="Lambda" textFill="#f7fffe">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane layoutX="108.0" layoutY="178.0" prefHeight="244.0" prefWidth="241.0" style="-fx-background-color: #414a4c;">
+                           <children>
+                              <TextField id="buff_capacity" layoutX="81.0" layoutY="122.0" />
+                              <Label layoutX="14.0" layoutY="124.0" style="-fx-focus-traversable: #FF00FF;" text="Capacity" textFill="#f7fffe">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="89.0" layoutY="14.0" style="-fx-focus-traversable: #FF00FF;" text="Buffer" textFill="#f7fffe">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                        <Label layoutX="437.0" layoutY="14.0" text="SMO">
+                           <font>
+                              <Font size="72.0" />
+                           </font>
+                        </Label>
+                        <Button id="btn_start" layoutX="364.0" layoutY="533.0" mnemonicParsing="false" prefWidth="266.0" style="-fx-background-color: #2ee455;" text="START" textFill="#170606">
+                           <font>
+                              <Font size="36.0" />
+                           </font>
+                        </Button>
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+          <Tab id="tab_step_mode" text="Step mode">
+               <content>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <AnchorPane id="step_test" layoutX="446.0" layoutY="263.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #ff00ff;" />
+                     </children>
+                  </AnchorPane>
+               </content></Tab>
+            <Tab id="tab_result" text="Result" />
+        </tabs>
+      </TabPane>
+   </children>
 </AnchorPane>
