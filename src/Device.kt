@@ -11,7 +11,7 @@ class Device(private val lambda: Double) {
     }
 
     private var deviceNumber = number
-    private var countApplications = 0L
+    private var countApplications = -1L
     private var timeEnd = -1L
     private var currentApp: Application? = null
     var isFree = true

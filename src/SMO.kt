@@ -8,16 +8,14 @@ class SMO(bufferCapacity: Int, sources: Int, devices: Int, lambda: Double) {
     private val devices = List(devices) { it -> Device(lambda) }
 
     private val calendar = ApplicationCalendar
-    var event = Event.SOURCE //bms1
+    var event = Event.DEVICE //bms1
     var time = 0L
     private var pointerDevice = -1
 
-    //var pointerDevice = 0;
 
     fun runSMO() {
         val fileName = "C:\\Users\\Daniil\\IdeaProjects\\SMO\\src\\test.txt"
         val fileWrite = File(fileName).bufferedWriter()
-        printStat()
 
         while (true) {
             devices.forEach {
@@ -30,7 +28,6 @@ class SMO(bufferCapacity: Int, sources: Int, devices: Int, lambda: Double) {
                 }
             }
             printStat()
-            printCalendar(fileWrite)
 
             when (event) {
 
@@ -81,6 +78,7 @@ class SMO(bufferCapacity: Int, sources: Int, devices: Int, lambda: Double) {
                                 tmpApp //return
                             }
                         }
+                        //println("APPPP" +app)
                         if (app != null && app.time <= time) {
                             if (flag) {
                                 app = calendar.findMinTime()?.first
@@ -93,6 +91,8 @@ class SMO(bufferCapacity: Int, sources: Int, devices: Int, lambda: Double) {
                         } else if (app != null) {
                             // если нет заявок, а прибор выбран
                             pointerDevice--
+                        } else {
+                            pointerDevice --
                         }
 
                     } else {
@@ -104,6 +104,8 @@ class SMO(bufferCapacity: Int, sources: Int, devices: Int, lambda: Double) {
                     }
                 }
             }
+            printCalendar(fileWrite)
+
             val read = readLine()
         }
     }
@@ -144,7 +146,7 @@ class SMO(bufferCapacity: Int, sources: Int, devices: Int, lambda: Double) {
         println("Time is $time  event is: $event")
         println("--STAT--")
         sources.forEach { it ->
-            println("Source number ${it.getNumber()} status ${it.countApplications()} TIME END: ${it.getEndTime()} ")
+            println("Source number ${it.getNumber()} TIME END: ${it.getEndTime()} ")
         }
         devices.forEach { it ->
             println("Device number ${it.getNumber()} status ${it.isFree} handled applications ${it.countApplications()} TIME END: ${it.getEndTime()} ")
@@ -163,7 +165,7 @@ class SMO(bufferCapacity: Int, sources: Int, devices: Int, lambda: Double) {
             if (devices[pointerDevice].isFree && time >= devices[pointerDevice].getEndTime()) {
                 deviceIndex = pointerDevice
                 println("device is${devices[pointerDevice].getNumber()}  index is:${i}  ind is: $pointerDevice")
-                break;
+                break
             }
         }
         return deviceIndex
