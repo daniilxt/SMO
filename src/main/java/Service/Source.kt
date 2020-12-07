@@ -1,6 +1,6 @@
-import kotlin.math.exp
-import kotlin.math.ln
-import kotlin.random.Random
+package Service
+
+import DAO.Application
 
 class Source(private val lambda: Double, private val tau: Double, isSystem: Boolean = false) {
     init {
@@ -24,7 +24,7 @@ class Source(private val lambda: Double, private val tau: Double, isSystem: Bool
         //time + равномерное распределение
         timeEnd = time + ((lambda * tau) * 1000).toLong()
         val app = Application(this, timeEnd)
-        println("Application ${app.getNumber()} from Source $sourceNumber will generated in time ${app.time}")
+        println("DAO.Application ${app.getNumber()} from Service.Source $sourceNumber will generated in time ${app.time}")
         countApplications++
         return app
     }

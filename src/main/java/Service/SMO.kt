@@ -1,3 +1,7 @@
+package Service
+
+import DAO.Application
+import DAO.Event
 import java.io.BufferedWriter
 import java.io.File
 import kotlin.random.Random
@@ -14,7 +18,7 @@ class SMO(bufferCapacity: Int, sources: Int, devices: Int, lambda: Double) {
 
 
     fun runSMO() {
-        val fileName = "C:\\Users\\Daniil\\IdeaProjects\\SMO\\src\\test.txt"
+        val fileName = "C:\\Users\\Daniil\\IdeaProjects\\Service.SMO\\src\\test.txt"
         val fileWrite = File(fileName).bufferedWriter()
 
         while (true) {
@@ -100,7 +104,7 @@ class SMO(bufferCapacity: Int, sources: Int, devices: Int, lambda: Double) {
                         println("Handlers is fulled")
                     }
                     devices.forEach { it ->
-                        println("Device number ${it.getNumber()} status ${it.isFree} handled applications ${it.countApplications()} ")
+                        println("Service.Device number ${it.getNumber()} status ${it.isFree} handled applications ${it.countApplications()} ")
                     }
                 }
             }
@@ -146,10 +150,10 @@ class SMO(bufferCapacity: Int, sources: Int, devices: Int, lambda: Double) {
         println("Time is $time  event is: $event")
         println("--STAT--")
         sources.forEach { it ->
-            println("Source number ${it.getNumber()} TIME END: ${it.getEndTime()} ")
+            println("Service.Source number ${it.getNumber()} TIME END: ${it.getEndTime()} ")
         }
         devices.forEach { it ->
-            println("Device number ${it.getNumber()} status ${it.isFree} handled applications ${it.countApplications()} TIME END: ${it.getEndTime()} ")
+            println("Service.Device number ${it.getNumber()} status ${it.isFree} handled applications ${it.countApplications()} TIME END: ${it.getEndTime()} ")
         }
         buffer.printQueue()
         println("--END STAT-- \n")

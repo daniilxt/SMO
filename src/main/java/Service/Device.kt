@@ -1,3 +1,6 @@
+package Service
+
+import DAO.Application
 import kotlin.math.ln
 import kotlin.random.Random
 

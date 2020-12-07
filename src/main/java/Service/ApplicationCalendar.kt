@@ -1,3 +1,7 @@
+package Service
+
+import DAO.Application
+import DAO.Event
 import java.io.BufferedWriter
 
 object ApplicationCalendar {

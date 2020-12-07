@@ -1,4 +1,8 @@
-data class Application(var source: Source, var time: Long,var isSystem:Boolean = false) {
+package DAO
+
+import Service.Source
+
+data class Application(var source: Source, var time: Long, var isSystem:Boolean = false) {
     init {
         number += 1
         if (isSystem){
