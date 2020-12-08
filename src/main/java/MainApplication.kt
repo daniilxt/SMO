@@ -13,11 +13,23 @@ class MainApplication : javafx.application.Application() {
     lateinit var output: Label
 
     override fun start(stage: Stage) {
-        stage.scene = Scene(FXMLLoader.load(javaClass.getResource("MainApplication.fxml")))
-        stage.show()
+/*        stage.scene = Scene(FXMLLoader.load(javaClass.getResource("MainApplication.fxml")))
+        val controller: Controller =loader.getController()
+        stage.show()*/
+        try {
+            val loader = FXMLLoader(javaClass.getResource("MainApplication.fxml"))
+
+            stage.scene = Scene(loader.load())
+            stage.title = "SMO"
+            stage.show()
+            val controller: Controller = loader.getController()
+            controller.createFieldsList()
+        } catch (ex: Exception) {
+
+        }
     }
 }
 
-fun main(args: Array<String>) {
-    javafx.application.Application.launch(MainApplication::class.java, *args)
+fun main() {
+    javafx.application.Application.launch(MainApplication::class.java)
 }

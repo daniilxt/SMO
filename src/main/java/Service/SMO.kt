@@ -6,7 +6,7 @@ import java.io.BufferedWriter
 import java.io.File
 import kotlin.random.Random
 
-class SMO(bufferCapacity: Int, sources: Int, devices: Int, lambda: Double) {
+class SMO(bufferCapacity: Int, sources: Int, devices: Int, var appCount: Long, lambda: Double, var isStepMode: Boolean = false) {
     private val buffer = Buffer(bufferCapacity)
     private val sources = List(sources) { it -> Source(lambda, Random.nextDouble()) }
     private val devices = List(devices) { it -> Device(lambda) }
@@ -18,10 +18,10 @@ class SMO(bufferCapacity: Int, sources: Int, devices: Int, lambda: Double) {
 
 
     fun runSMO() {
-        val fileName = "C:\\Users\\Daniil\\IdeaProjects\\Service.SMO\\src\\test.txt"
+        val fileName = "C:\\Users\\Daniil\\IdeaProjects\\SMO\\src\\main\\java\\test.txt"
         val fileWrite = File(fileName).bufferedWriter()
-
-        while (true) {
+        var flagEnd = 0L
+        while ((appCount >= flagEnd) /*&& (!allDevicesFree()) && !calendarIsFree()*/) {
             devices.forEach {
                 if (it.getEndTime() == time) {
                     it.isFree = true
@@ -32,6 +32,7 @@ class SMO(bufferCapacity: Int, sources: Int, devices: Int, lambda: Double) {
                 }
             }
             printStat()
+            printCalendar(fileWrite)
 
             when (event) {
 
@@ -96,7 +97,7 @@ class SMO(bufferCapacity: Int, sources: Int, devices: Int, lambda: Double) {
                             // если нет заявок, а прибор выбран
                             pointerDevice--
                         } else {
-                            pointerDevice --
+                            pointerDevice--
                         }
 
                     } else {
@@ -108,10 +109,28 @@ class SMO(bufferCapacity: Int, sources: Int, devices: Int, lambda: Double) {
                     }
                 }
             }
-            printCalendar(fileWrite)
-
-            val read = readLine()
+           // printCalendar(fileWrite)
+            flagEnd = checkAppCount()
+            if (isStepMode) {
+                val read = readLine()
+            }
         }
+        calendar.printAppsAfter(time)
+
+    }
+
+    private fun calendarIsFree(): Boolean {
+        calendar.printApps()
+
+        return calendar.isEmpty() && allDevicesFree()
+    }
+
+    private fun allDevicesFree(): Boolean {
+        return devices.stream().allMatch { it.isFree && it.countApplications() > 0 }
+    }
+
+    private fun checkAppCount(): Long {
+        return devices.map { it.countApplications() }.sum()
     }
 
     fun runTestSMO() {

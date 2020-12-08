@@ -50,7 +50,30 @@ object ApplicationCalendar {
         }
     }
 
+    fun printApps() {
+        if (applicationList.isNotEmpty()) {
+            applicationList.forEach { it ->
+                println("App num = ${it.first.getNumber()} App source ${it.first.source.getNumber()} App time ${it.first.time}  App type ${it.second} \n")
+            }
+        }
+    }
+
+    fun printAppsAfter(time: Long) {
+        if (applicationList.isNotEmpty()) {
+            applicationList.forEach { it ->
+                if (it.first.time <= time) {
+                    println("App num = ${it.first.getNumber()} App source ${it.first.source.getNumber()} App time ${it.first.time}  App type ${it.second} \n")
+                }
+            }
+        }
+    }
+
     fun remove(pair: Pair<Application, Event>) {
         applicationList.remove(pair)
     }
+
+    fun isEmpty(): Boolean {
+        return applicationList.isEmpty()
+    }
+
 }
