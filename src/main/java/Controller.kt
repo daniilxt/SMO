@@ -14,7 +14,7 @@ class Controller {
     private var tab_menu: Tab? = null
 
     @FXML
-    private var tab_pane: Tab? = null
+    private var tab_pane: TabPane? = null
 
     @FXML
     private var devices_lambda: TextField? = null
@@ -139,7 +139,7 @@ class Controller {
         tab.content = Rectangle(200.0, 200.0, Color.LIGHTSTEELBLUE)
         tabPane.tabs.add(tab)*/
         createFieldsList()
-       // initColumns()
+        initColumns()
     }
 
     @FXML
