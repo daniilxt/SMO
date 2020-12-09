@@ -10,6 +10,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="755.0" prefWidth="994.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
    <children>
@@ -108,7 +109,7 @@
                <content>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <TableView layoutX="65.0" layoutY="95.0">
+                        <TableView fx:id="table_view_calendar" layoutX="65.0" layoutY="95.0">
                           <columns>
                             <TableColumn fx:id="app_num_sm" prefWidth="122.0" text="App number" />
                             <TableColumn fx:id="source_sm" prefWidth="77.0" text="Source" />
@@ -121,13 +122,33 @@
                               <Font size="31.0" />
                            </font>
                         </Button>
-                        <TableView layoutX="536.0" layoutY="95.0">
+                        <TableView fx:id="table_view_buffer" layoutX="536.0" layoutY="95.0">
                            <columns>
                               <TableColumn fx:id="app_num_buff" prefWidth="122.0" text="App number" />
                               <TableColumn fx:id="source_buff" prefWidth="77.0" text="Source" />
                               <TableColumn fx:id="time_buff" prefWidth="86.0" text="Time" />
                            </columns>
                         </TableView>
+                        <Label layoutX="143.0" layoutY="43.0" text="Application calendar">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="641.0" layoutY="43.0" text="Buffer">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="101.0" layoutY="562.0" text="Time">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <Text fx:id="time_step" layoutX="252.0" layoutY="591.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
+                           <font>
+                              <Font size="29.0" />
+                           </font>
+                        </Text>
                      </children>
                   </AnchorPane>
                </content></Tab>

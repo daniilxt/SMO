@@ -9,7 +9,10 @@ data class Application(var source: Source, var time: Long, var isSystem:Boolean 
             number = 0
         }
     }
-    private val applicationNumber = number
+    val applicationNumber = number
+    var event = Event.SOURCE
+    var src = source.getNumber()
+
     fun getNumber(): Long {
         return applicationNumber
     }

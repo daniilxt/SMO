@@ -3,9 +3,10 @@ import DAO.Event
 import Service.SMO
 import javafx.fxml.FXML
 import javafx.scene.control.*
+import javafx.scene.control.cell.PropertyValueFactory
+import javafx.scene.text.Text
 import java.net.URL
 import java.util.*
-import javafx.scene.control.cell.PropertyValueFactory
 
 
 class Controller {
@@ -41,7 +42,16 @@ class Controller {
     private var is_step: CheckBox? = null
 
     @FXML
+    private var time_step: Text? = null
+
+    @FXML
     private var tab_step_mode: Tab? = null
+
+    @FXML
+    private var table_view_calendar: TableView<Application>? = null
+
+    @FXML
+    private var table_view_buffer: TableView<Application>? = null
 
     @FXML
     private var app_num_sm: TableColumn<Application, Int>? = null
@@ -73,16 +83,25 @@ class Controller {
     @FXML
     private var location: URL? = null
 
+    @FXML
     private var tab_result: Tab? = null
+
+    @FXML
+    private var id_text: Text? = null
+
     private var fieldsList = mutableListOf<TextField?>()
+    private var appList = mutableListOf<Application>()
+    private var bufferList = mutableListOf<Application>()
+
     private var isStep = false
     private var smoObj: SMO? = null
-
+    private var smoThread: Thread? = null
+    //private var  obList:ObservableList<Application> = FXCollections.observableArrayList()
 
     @FXML
     fun OnSelectShange() {
-        smoObj?.runSMO()
     }
+
     @FXML
     fun OnClickStart() {
 
@@ -92,14 +111,19 @@ class Controller {
                 fieldsList.forEach {
                     tmpArr.add(it!!.text.toDouble())
                 }
-                smoObj = SMO(
-                    tmpArr[0].toInt(),
-                    tmpArr[1].toInt(),
-                    tmpArr[2].toInt(),
-                    tmpArr[3].toLong(),
-                    tmpArr[4],
-                    isStep
-                )
+                smoThread = Thread {
+                    smoObj = SMO(
+                            tmpArr[0].toInt(),
+                            tmpArr[1].toInt(),
+                            tmpArr[2].toInt(),
+                            tmpArr[3].toLong(),
+                            tmpArr[4],
+                            isStep
+                    )
+                    smoObj?.runStepSMO() {}
+                }
+                smoThread!!.start()
+
             } catch (ex: Exception) {
                 println(ex.message)
                 alert()
@@ -133,30 +157,43 @@ class Controller {
     @FXML
     fun initialize() {
 
-/*        val tabPane = TabPane()
-        val tab = Tab()
-        tab.text = "new tab"
-        tab.content = Rectangle(200.0, 200.0, Color.LIGHTSTEELBLUE)
-        tabPane.tabs.add(tab)*/
         createFieldsList()
         initColumns()
     }
 
     @FXML
     fun OnNextStep() {
-        smoObj?.nextStep()
+        nextStep(1)
+    }
+
+    private fun nextStep(it: Any) {
+        smoObj?.runStepSMO {
+        }
+        try {
+            appList = smoObj!!.getApps()
+            table_view_calendar?.items?.clear()
+            table_view_calendar?.items?.addAll(appList)
+
+            bufferList = smoObj!!.getBuffer()
+            table_view_buffer?.items?.clear()
+            table_view_buffer?.items?.addAll(bufferList)
+            time_step!!.text = (smoObj?.getCurrentTime().toString())
+
+        } catch (e: Exception) {
+
+        }
     }
 
     private fun initColumns() {
 
-        app_num_sm?.cellValueFactory = PropertyValueFactory("App number")
-        source_sm?.cellValueFactory = PropertyValueFactory("Source")
-        time_sm?.cellValueFactory = PropertyValueFactory("Time")
-        event_sm?.cellValueFactory = PropertyValueFactory("Event")
+        app_num_sm?.cellValueFactory = PropertyValueFactory("applicationNumber")
+        source_sm?.cellValueFactory = PropertyValueFactory("src")
+        time_sm?.cellValueFactory = PropertyValueFactory("time")
+        event_sm?.cellValueFactory = PropertyValueFactory("event")
 
-        app_num_buff?.cellValueFactory = PropertyValueFactory("App number")
-        source_buff?.cellValueFactory = PropertyValueFactory("Source")
-        time_buff?.cellValueFactory = PropertyValueFactory("Time")
+        app_num_buff?.cellValueFactory = PropertyValueFactory("applicationNumber")
+        source_buff?.cellValueFactory = PropertyValueFactory("src")
+        time_buff?.cellValueFactory = PropertyValueFactory("time")
     }
 
     fun createFieldsList() {

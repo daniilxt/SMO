@@ -7,12 +7,12 @@ import java.io.File
 import kotlin.random.Random
 
 class SMO(
-    bufferCapacity: Int,
-    sources: Int,
-    devices: Int,
-    var appCount: Long,
-    lambda: Double,
-    var isStepMode: Boolean = false
+        bufferCapacity: Int,
+        sources: Int,
+        devices: Int,
+        var appCount: Long,
+        lambda: Double,
+        var isStepMode: Boolean = false
 ) {
     private val buffer = Buffer(bufferCapacity)
     private val sources = List(sources) { it -> Source(lambda, Random.nextDouble()) }
@@ -24,117 +24,111 @@ class SMO(
     private var pointerDevice = -1
     private var nextStep = false
 
+    val fileName = "C:\\Users\\Daniil\\IdeaProjects\\SMO\\src\\main\\java\\test.txt"
+    val fileWrite = File(fileName).bufferedWriter()
+    var flagEnd = 0L
 
 
     fun runSMO() {
-        val fileName = "C:\\Users\\Daniil\\IdeaProjects\\SMO\\src\\main\\java\\test.txt"
-        val fileWrite = File(fileName).bufferedWriter()
-        var flagEnd = 0L
-        while ((appCount >= flagEnd) /*&& (!allDevicesFree()) && !calendarIsFree()*/) {
-            devices.forEach {
-                if (it.getEndTime() == time) {
-                    it.isFree = true
-                    val app = it.clear()
-                    if (app != null) {
-                        calendar.remove(app to Event.DEVICE)
-                    }
-                }
-            }
-            printStat()
-            printCalendar(fileWrite)
-
-            when (event) {
-
-                Event.SOURCE -> {
-                    sources.forEach { it ->
-                        if (time >= it.getEndTime()) {
-                            calendar.addApplication(it.generateApplication(time), Event.SOURCE)
-                        }
-                    }
-                    // get min application, then get time
-                    time = calendar.getMinTime(Event.SOURCE, Event.DEVICE)?.first?.time ?: time
-                    event = Event.DEVICE
-                }
-
-                Event.BUFFER -> {
-                    time = calendar.getMinTime(Event.SOURCE, Event.DEVICE)?.first?.time ?: time
-                    val app = calendar.changeMinStatus(Event.SOURCE, Event.BUFFER)
-                    if (!buffer.isFull()) {
-                        if (app != null) {
-                            buffer.add(app)
-                        }
-                    } else {
-                        if (app != null) {
-                            val appTmp = buffer.getLast()
-                            calendar.remove(appTmp to Event.BUFFER)
-                            buffer.pull(app)
-                        }
-                    }
-                    event = Event.SOURCE
-                }
-                Event.DEVICE -> {
-
-                    event = Event.SOURCE
-                    time = calendar.getMinTime(Event.SOURCE, Event.DEVICE)?.first?.time ?: time
-                    val freeDevice: Int? = findDevice()
-                    if (freeDevice != null) {
-                        var flag = false
-                        var app: Application? = when (buffer.isEmpty()) {
-                            true -> {
-                                flag = true
-                                calendar.getMinTime()?.first
-                            }
-                            false -> {
-                                println("BEFORE BUFFER___ ")
-                                buffer.printQueue()
-                                val tmpApp = buffer.getNext()
-                                calendar.remove(tmpApp to Event.BUFFER)
-                                tmpApp //return
-                            }
-                        }
-                        //println("APPPP" +app)
-                        if (app != null && app.time <= time) {
-                            if (flag) {
-                                app = calendar.findMinTime()?.first
-                            }
-                            devices[freeDevice].handle(app!!, time)
-                            devices[freeDevice].isFree = false
-                            app.time = devices[freeDevice].getEndTime()
-                            calendar.addApplication(app, Event.DEVICE)
-
-                        } else if (app != null) {
-                            // если нет заявок, а прибор выбран
-                            pointerDevice--
-                        } else {
-                            pointerDevice--
-                        }
-
-                    } else {
-                        event = Event.BUFFER
-                        println("Handlers is fulled")
-                    }
-                    devices.forEach { it ->
-                        println("Service.Device number ${it.getNumber()} status ${it.isFree} handled applications ${it.countApplications()} ")
-                    }
-                }
-            }
-            // printCalendar(fileWrite)
-            flagEnd = checkAppCount()
-            if (isStepMode) {
-                while (!nextStep){
-
-                }
-                nextStep = false
-            }
+        while ((appCount >= flagEnd)) {
+            runStepSMO() {}
         }
         calendar.printAppsAfter(time)
 
     }
 
-    private fun calendarIsFree(): Boolean {
-        calendar.printApps()
+    fun runStepSMO(callback: () -> Unit) {
+        devices.forEach {
+            if (it.getEndTime() == time) {
+                it.isFree = true
+                val app = it.clear()
+                if (app != null) {
+                    calendar.remove(app to Event.DEVICE)
+                }
+            }
+        }
+        printStat()
+        printCalendar(fileWrite)
 
-        return calendar.isEmpty() && allDevicesFree()
+        when (event) {
+
+            Event.SOURCE -> {
+                sources.forEach { it ->
+                    if (time >= it.getEndTime()) {
+                        calendar.addApplication(it.generateApplication(time), Event.SOURCE)
+                    }
+                }
+                // get min application, then get time
+                time = calendar.getMinTime(Event.SOURCE, Event.DEVICE)?.first?.time ?: time
+                event = Event.DEVICE
+            }
+
+            Event.BUFFER -> {
+                time = calendar.getMinTime(Event.SOURCE, Event.DEVICE)?.first?.time ?: time
+                val app = calendar.changeMinStatus(Event.SOURCE, Event.BUFFER)
+                if (!buffer.isFull()) {
+                    if (app != null) {
+                        buffer.add(app)
+                    }
+                } else {
+                    if (app != null) {
+                        val appTmp = buffer.getLast()
+                        calendar.remove(appTmp to Event.BUFFER)
+                        buffer.pull(app)
+                    }
+                }
+                event = Event.SOURCE
+            }
+            Event.DEVICE -> {
+
+                event = Event.SOURCE
+                time = calendar.getMinTime(Event.SOURCE, Event.DEVICE)?.first?.time ?: time
+                val freeDevice: Int? = findDevice()
+                if (freeDevice != null) {
+                    var flag = false
+                    var app: Application? = when (buffer.isEmpty()) {
+                        true -> {
+                            flag = true
+                            calendar.getMinTime()?.first
+                        }
+                        false -> {
+                            println("BEFORE BUFFER___ ")
+                            buffer.printQueue()
+                            val tmpApp = buffer.getNext()
+                            calendar.remove(tmpApp to Event.BUFFER)
+                            tmpApp //return
+                        }
+                    }
+                    //println("APPPP" +app)
+                    if (app != null && app.time <= time) {
+                        if (flag) {
+                            app = calendar.findMinTime()?.first
+                        }
+                        devices[freeDevice].handle(app!!, time)
+                        devices[freeDevice].isFree = false
+                        app.time = devices[freeDevice].getEndTime()
+                        calendar.addApplication(app, Event.DEVICE)
+
+                    } else if (app != null) {
+                        // если нет заявок, а прибор выбран
+                        pointerDevice--
+                    } else {
+                        pointerDevice--
+                    }
+
+                } else {
+                    event = Event.BUFFER
+                    println("Handlers is fulled")
+                }
+                devices.forEach { it ->
+                    println("Service.Device number ${it.getNumber()} status ${it.isFree} handled applications ${it.countApplications()} ")
+                }
+            }
+        }
+        flagEnd = checkAppCount()
+
+        callback()
+
     }
 
     private fun allDevicesFree(): Boolean {
@@ -183,7 +177,15 @@ class SMO(
         return deviceIndex
     }
 
-    fun nextStep() {
-       nextStep = true
+    // for fx
+    fun getApps(): MutableList<Application> {
+        return calendar.getAppList()
     }
+    fun getBuffer(): MutableList<Application> {
+        return buffer.getList()
+    }
+    fun getCurrentTime():Long {
+        return  time
+    }
+
 }

@@ -74,4 +74,8 @@ class Buffer(private val capacity: Int) {
     fun getLast(): Application {
         return queue[capacity - 1]
     }
+
+    fun getList(): MutableList<Application> {
+        return queue.filter { !it.isSystem }.toMutableList()
+    }
 }

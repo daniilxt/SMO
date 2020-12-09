@@ -3,12 +3,15 @@ package Service
 import DAO.Application
 import DAO.Event
 import java.io.BufferedWriter
+import java.util.*
+import java.util.stream.Collectors
 
 object ApplicationCalendar {
     private val applicationList = mutableListOf<Pair<Application, Event>>()
 
     fun addApplication(app: Application, event: Event) {
         applicationList.add((app) to event)
+        app.event = event //TODO
     }
 
     override fun toString(): String {
@@ -37,6 +40,7 @@ object ApplicationCalendar {
         val index = applicationList.indexOf(minApplication)
         if (minApplication != null && minApplication.second != buffer) {
             applicationList[index] = Pair(minApplication.first, buffer)
+            applicationList[index].first.event = buffer //TODO
         }
         return minApplication?.first
     }
@@ -76,4 +80,7 @@ object ApplicationCalendar {
         return applicationList.isEmpty()
     }
 
+    fun getAppList(): MutableList<Application> {
+        return applicationList.stream().map { it.first }.collect(Collectors.toList())
+    }
 }
