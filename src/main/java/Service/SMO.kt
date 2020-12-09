@@ -6,7 +6,14 @@ import java.io.BufferedWriter
 import java.io.File
 import kotlin.random.Random
 
-class SMO(bufferCapacity: Int, sources: Int, devices: Int, var appCount: Long, lambda: Double, var isStepMode: Boolean = false) {
+class SMO(
+    bufferCapacity: Int,
+    sources: Int,
+    devices: Int,
+    var appCount: Long,
+    lambda: Double,
+    var isStepMode: Boolean = false
+) {
     private val buffer = Buffer(bufferCapacity)
     private val sources = List(sources) { it -> Source(lambda, Random.nextDouble()) }
     private val devices = List(devices) { it -> Device(lambda) }
@@ -15,6 +22,8 @@ class SMO(bufferCapacity: Int, sources: Int, devices: Int, var appCount: Long, l
     var event = Event.DEVICE //bms1
     var time = 0L
     private var pointerDevice = -1
+    private var nextStep = false
+
 
 
     fun runSMO() {
@@ -109,10 +118,13 @@ class SMO(bufferCapacity: Int, sources: Int, devices: Int, var appCount: Long, l
                     }
                 }
             }
-           // printCalendar(fileWrite)
+            // printCalendar(fileWrite)
             flagEnd = checkAppCount()
             if (isStepMode) {
-                val read = readLine()
+                while (!nextStep){
+
+                }
+                nextStep = false
             }
         }
         calendar.printAppsAfter(time)
@@ -131,29 +143,6 @@ class SMO(bufferCapacity: Int, sources: Int, devices: Int, var appCount: Long, l
 
     private fun checkAppCount(): Long {
         return devices.map { it.countApplications() }.sum()
-    }
-
-    fun runTestSMO() {
-/*        sources.forEach { it ->
-            if (time >= it.getEndTime()) {
-                buffer.add(it.generateApplication(time))
-            }
-        }*/
-/*
-        buffer.printQueue()
-        buffer.add(sources[1].generateApplication(time))
-      buffer.add(sources[0].generateApplication(time+2))
-        buffer.add(sources[0].generateApplication(time))
-        buffer.printQueue()
-        println("__")
-        buffer.getNext()
-        buffer.printQueue()
-        println("__")
-        buffer.getNext()
-        buffer.printQueue()
-        println("__")
-        buffer.getNext()
-        buffer.printQueue()*/
     }
 
     private fun printCalendar(fileWrite: BufferedWriter) {
@@ -192,5 +181,9 @@ class SMO(bufferCapacity: Int, sources: Int, devices: Int, var appCount: Long, l
             }
         }
         return deviceIndex
+    }
+
+    fun nextStep() {
+       nextStep = true
     }
 }

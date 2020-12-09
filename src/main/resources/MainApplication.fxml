@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="755.0" prefWidth="994.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
    <children>
-      <TabPane prefHeight="400.0" prefWidth="600.0" style="-fx-back: #2e3348;" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <TabPane fx:id="tab_pane" prefHeight="400.0" prefWidth="600.0" style="-fx-back: #2e3348;" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
-          <Tab fx:id="tab_menu" text="Menu">
+          <Tab fx:id="tab_menu" onSelectionChanged="#OnSelectShange" text="Menu">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="233.0" prefWidth="390.0">
                      <children>
-                        <AnchorPane layoutX="689.0" layoutY="148.0" prefHeight="241.0" prefWidth="240.0" style="-fx-background-color: #414a4c;">
+                        <AnchorPane layoutX="670.0" layoutY="149.0" prefHeight="241.0" prefWidth="264.0" style="-fx-background-color: #414a4c;">
                            <children>
                               <TextField fx:id="devices_lambda" layoutX="77.0" layoutY="163.0" />
                               <TextField fx:id="devices_count" layoutX="77.0" layoutY="118.0" />
@@ -37,7 +40,7 @@
                               </Label>
                            </children>
                         </AnchorPane>
-                        <AnchorPane layoutX="397.0" layoutY="147.0" prefHeight="243.0" prefWidth="239.0" style="-fx-background-color: #414a4c;">
+                        <AnchorPane layoutX="365.0" layoutY="147.0" prefHeight="243.0" prefWidth="265.0" style="-fx-background-color: #414a4c;">
                            <children>
                               <TextField fx:id="sources_count" layoutX="76.0" layoutY="119.0" />
                               <Label layoutX="78.0" layoutY="14.0" style="-fx-focus-traversable: #FF00FF;" text="Sources" textFill="#f7fffe">
@@ -58,7 +61,7 @@
                               </Label>
                            </children>
                         </AnchorPane>
-                        <AnchorPane layoutX="105.0" layoutY="147.0" prefHeight="244.0" prefWidth="241.0" style="-fx-background-color: #414a4c;">
+                        <AnchorPane layoutX="55.0" layoutY="147.0" prefHeight="244.0" prefWidth="268.0" style="-fx-background-color: #414a4c;">
                            <children>
                               <TextField fx:id="buff_capacity" layoutX="81.0" layoutY="122.0" />
                               <Label layoutX="14.0" layoutY="124.0" style="-fx-focus-traversable: #FF00FF;" text="Capacity" textFill="#f7fffe">
@@ -83,7 +86,7 @@
                               <Font size="36.0" />
                            </font>
                         </Button>
-                        <AnchorPane layoutX="396.0" layoutY="413.0" prefHeight="119.0" prefWidth="242.0" style="-fx-background-color: #414a4c;">
+                        <AnchorPane layoutX="256.0" layoutY="411.0" prefHeight="119.0" prefWidth="484.0" style="-fx-background-color: #414a4c;">
                            <children>
                               <Label layoutX="54.0" layoutY="21.0" text="Count of application" textFill="#f7fffe">
                                  <font>
@@ -91,6 +94,11 @@
                                  </font>
                               </Label>
                               <TextField fx:id="count_app" layoutX="47.0" layoutY="60.0" />
+                              <CheckBox fx:id="is_step" layoutX="289.0" layoutY="63.0" mnemonicParsing="false" onAction="#OnStepModeClick" text="Step mode" textFill="#f7fffe">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </CheckBox>
                            </children>
                         </AnchorPane>
                      </children></AnchorPane>
@@ -100,7 +108,26 @@
                <content>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <AnchorPane id="step_test" layoutX="446.0" layoutY="263.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #ff00ff;" />
+                        <TableView layoutX="65.0" layoutY="95.0">
+                          <columns>
+                            <TableColumn fx:id="app_num_sm" prefWidth="122.0" text="App number" />
+                            <TableColumn fx:id="source_sm" prefWidth="77.0" text="Source" />
+                              <TableColumn fx:id="time_sm" prefWidth="86.0" text="Time" />
+                              <TableColumn fx:id="event_sm" prefWidth="86.0" text="Event" />
+                          </columns>
+                        </TableView>
+                        <Button fx:id="btn_next" layoutX="673.0" layoutY="562.0" mnemonicParsing="false" onAction="#OnNextStep" style="-fx-background-color: #a79595;" text="NEXT STEP">
+                           <font>
+                              <Font size="31.0" />
+                           </font>
+                        </Button>
+                        <TableView layoutX="536.0" layoutY="95.0">
+                           <columns>
+                              <TableColumn fx:id="app_num_buff" prefWidth="122.0" text="App number" />
+                              <TableColumn fx:id="source_buff" prefWidth="77.0" text="Source" />
+                              <TableColumn fx:id="time_buff" prefWidth="86.0" text="Time" />
+                           </columns>
+                        </TableView>
                      </children>
                   </AnchorPane>
                </content></Tab>
