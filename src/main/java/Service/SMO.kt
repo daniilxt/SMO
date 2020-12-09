@@ -7,12 +7,12 @@ import java.io.File
 import kotlin.random.Random
 
 class SMO(
-        bufferCapacity: Int,
-        sources: Int,
-        devices: Int,
-        var appCount: Long,
-        lambda: Double,
-        var isStepMode: Boolean = false
+    bufferCapacity: Int,
+    sources: Int,
+    devices: Int,
+    var appCount: Long,
+    lambda: Double,
+    var isStepMode: Boolean = false
 ) {
     private val buffer = Buffer(bufferCapacity)
     private val sources = List(sources) { it -> Source(lambda, Random.nextDouble()) }
@@ -27,12 +27,14 @@ class SMO(
     val fileName = "C:\\Users\\Daniil\\IdeaProjects\\SMO\\src\\main\\java\\test.txt"
     val fileWrite = File(fileName).bufferedWriter()
     var flagEnd = 0L
+    var stat = Stat(sources)
 
 
     fun runSMO() {
         while ((appCount >= flagEnd)) {
             runStepSMO() {}
         }
+        stat.printStat()
         calendar.printAppsAfter(time)
 
     }
@@ -47,7 +49,7 @@ class SMO(
                 }
             }
         }
-        printStat()
+        //printStat()
         printCalendar(fileWrite)
 
         when (event) {
@@ -73,6 +75,8 @@ class SMO(
                 } else {
                     if (app != null) {
                         val appTmp = buffer.getLast()
+                        println("DENY is ${appTmp.src}")
+                        stat.devDenied(appTmp.src)
                         calendar.remove(appTmp to Event.BUFFER)
                         buffer.pull(app)
                     }
@@ -106,8 +110,12 @@ class SMO(
                         }
                         devices[freeDevice].handle(app!!, time)
                         devices[freeDevice].isFree = false
+                        println("ALLOW is ${app.src}")
+                        stat.devHandled(app.src)
+
                         app.time = devices[freeDevice].getEndTime()
                         calendar.addApplication(app, Event.DEVICE)
+
 
                     } else if (app != null) {
                         // если нет заявок, а прибор выбран
@@ -181,11 +189,13 @@ class SMO(
     fun getApps(): MutableList<Application> {
         return calendar.getAppList()
     }
+
     fun getBuffer(): MutableList<Application> {
         return buffer.getList()
     }
-    fun getCurrentTime():Long {
-        return  time
+
+    fun getCurrentTime(): Long {
+        return time
     }
 
 }

@@ -13,9 +13,6 @@ class MainApplication : javafx.application.Application() {
     lateinit var output: Label
 
     override fun start(stage: Stage) {
-/*        stage.scene = Scene(FXMLLoader.load(javaClass.getResource("MainApplication.fxml")))
-        val controller: Controller =loader.getController()
-        stage.show()*/
         try {
             val loader = FXMLLoader(javaClass.getResource("MainApplication.fxml"))
 

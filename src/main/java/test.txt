@@ -1,4 +1,4 @@
---START--
+ --START--
 Time is 0
 --END--
 --START--

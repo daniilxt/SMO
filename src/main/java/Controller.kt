@@ -113,14 +113,18 @@ class Controller {
                 }
                 smoThread = Thread {
                     smoObj = SMO(
-                            tmpArr[0].toInt(),
-                            tmpArr[1].toInt(),
-                            tmpArr[2].toInt(),
-                            tmpArr[3].toLong(),
-                            tmpArr[4],
-                            isStep
+                        tmpArr[0].toInt(),
+                        tmpArr[1].toInt(),
+                        tmpArr[2].toInt(),
+                        tmpArr[3].toLong(),
+                        tmpArr[4],
+                        isStep
                     )
-                    smoObj?.runStepSMO() {}
+                    if (isStep) {
+                        smoObj?.runStepSMO() {}
+                    } else {
+                        smoObj?.runSMO()
+                    }
                 }
                 smoThread!!.start()
 

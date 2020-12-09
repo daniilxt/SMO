@@ -22,7 +22,7 @@ class Source(private val lambda: Double, private val tau: Double, isSystem: Bool
 
     fun generateApplication(time: Long): Application {
         //time + равномерное распределение
-        timeEnd = time + ((lambda * tau) * 1000).toLong()
+        timeEnd = time + ((lambda + tau) * 1000).toLong()
         val app = Application(this, timeEnd)
         println("DAO.Application ${app.getNumber()} from Service.Source $sourceNumber will generated in time ${app.time}")
         countApplications++
