@@ -99,6 +99,8 @@ class SMO(
                             println("BEFORE BUFFER___ ")
                             buffer.printQueue()
                             val tmpApp = buffer.getNext()
+                            stat.timeInBuffer(tmpApp.src, time - tmpApp.time)
+                            stat.countInBuffer(tmpApp.src)
                             calendar.remove(tmpApp to Event.BUFFER)
                             tmpApp //return
                         }
@@ -112,8 +114,8 @@ class SMO(
                         devices[freeDevice].isFree = false
                         println("ALLOW is ${app.src}")
                         stat.devHandled(app.src)
-
                         app.time = devices[freeDevice].getEndTime()
+                        stat.devTimeHandled(app.src, devices[freeDevice].handledTime())
                         calendar.addApplication(app, Event.DEVICE)
 
 
