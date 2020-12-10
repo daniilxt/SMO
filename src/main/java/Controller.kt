@@ -1,6 +1,9 @@
 import DAO.Application
 import DAO.Event
+import DAO.Statistics
 import Service.SMO
+import Service.Source
+import Service.Stat
 import javafx.fxml.FXML
 import javafx.scene.control.*
 import javafx.scene.control.cell.PropertyValueFactory
@@ -54,6 +57,9 @@ class Controller {
     private var table_view_buffer: TableView<Application>? = null
 
     @FXML
+    private var table_view_result: TableView<Statistics>? = null
+
+    @FXML
     private var app_num_sm: TableColumn<Application, Int>? = null
 
     @FXML
@@ -89,9 +95,35 @@ class Controller {
     @FXML
     private var id_text: Text? = null
 
+
+    @FXML
+    private var source_num_rs: TableColumn<Statistics, Long>? = null
+
+    @FXML
+    private var app_num_rs: TableColumn<Statistics, Long>? = null
+
+    @FXML
+    private var p_otk_rs: TableColumn<Statistics, Double>? = null
+
+    @FXML
+    private var t_wait_rs: TableColumn<Statistics, Double>? = null
+
+    @FXML
+    private var t_handle_rs: TableColumn<Statistics, Double>? = null
+
+    @FXML
+    private var t_sys_rs: TableColumn<Statistics, Double>? = null
+
+    @FXML
+    private var d_wait_rs: TableColumn<Statistics, Double>? = null
+
+    @FXML
+    private var d_handle_rs: TableColumn<Statistics, Double>? = null
+
     private var fieldsList = mutableListOf<TextField?>()
     private var appList = mutableListOf<Application>()
     private var bufferList = mutableListOf<Application>()
+    private var statList = mutableListOf<Statistics>()
 
     private var isStep = false
     private var smoObj: SMO? = null
@@ -124,6 +156,7 @@ class Controller {
                         smoObj?.runStepSMO() {}
                     } else {
                         smoObj?.runSMO()
+                        printStatistics(smoObj?.getStatistics())
                     }
                 }
                 smoThread!!.start()
@@ -135,6 +168,16 @@ class Controller {
             //clearForms()
         } else {
             alert()
+        }
+    }
+
+    private fun printStatistics(statistics: MutableList<Statistics>?) {
+        try {
+            statList = statistics!!
+            table_view_result?.items?.clear()
+            table_view_result?.items?.addAll(statList)
+        } catch (ex: java.lang.Exception) {
+
         }
     }
 
@@ -198,6 +241,16 @@ class Controller {
         app_num_buff?.cellValueFactory = PropertyValueFactory("applicationNumber")
         source_buff?.cellValueFactory = PropertyValueFactory("src")
         time_buff?.cellValueFactory = PropertyValueFactory("time")
+
+        app_num_rs?.cellValueFactory = PropertyValueFactory("src")
+        source_num_rs?.cellValueFactory = PropertyValueFactory("countApp")
+        p_otk_rs?.cellValueFactory = PropertyValueFactory("pDenied")
+        t_wait_rs?.cellValueFactory = PropertyValueFactory("timeWait")
+        t_handle_rs?.cellValueFactory = PropertyValueFactory("timeHandle")
+        t_sys_rs?.cellValueFactory = PropertyValueFactory("timeSystem")
+        d_wait_rs?.cellValueFactory = PropertyValueFactory("dispWait")
+        d_handle_rs?.cellValueFactory = PropertyValueFactory("dispHandled")
+
     }
 
     fun createFieldsList() {

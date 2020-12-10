@@ -152,7 +152,29 @@
                      </children>
                   </AnchorPane>
                </content></Tab>
-            <Tab id="tab_result" fx:id="tab_result" text="Result" />
+            <Tab id="tab_result" fx:id="tab_result" text="Result">
+               <content>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <AnchorPane layoutX="113.0" layoutY="134.0" prefHeight="722.0" prefWidth="994.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <TableView fx:id="table_view_result" layoutX="14.0" layoutY="59.0" prefHeight="400.0" prefWidth="703.0">
+                                <columns>
+                                  <TableColumn fx:id="source_num_rs" prefWidth="119.0" text="Num source" />
+                                  <TableColumn fx:id="app_num_rs" prefWidth="93.0" text="Count Apps" />
+                                    <TableColumn fx:id="p_otk_rs" prefWidth="61.0" text="pOtk" />
+                                    <TableColumn fx:id="t_wait_rs" prefWidth="62.0" text="T wait" />
+                                    <TableColumn fx:id="t_handle_rs" prefWidth="82.0" text="T handl" />
+                                    <TableColumn fx:id="t_sys_rs" prefWidth="113.0" text="T sys" />
+                                    <TableColumn fx:id="d_wait_rs" prefWidth="89.0" text="D wait" />
+                                    <TableColumn fx:id="d_handle_rs" prefWidth="83.0" text="D handle" />
+                                </columns>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </AnchorPane>
+               </content></Tab>
         </tabs>
       </TabPane>
    </children>

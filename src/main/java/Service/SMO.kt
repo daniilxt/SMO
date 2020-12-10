@@ -2,6 +2,7 @@ package Service
 
 import DAO.Application
 import DAO.Event
+import DAO.Statistics
 import java.io.BufferedWriter
 import java.io.File
 import kotlin.random.Random
@@ -34,7 +35,7 @@ class SMO(
         while ((appCount >= flagEnd)) {
             runStepSMO() {}
         }
-        stat.printStat()
+        stat.printStat(sources)
         calendar.printAppsAfter(time)
 
     }
@@ -105,7 +106,6 @@ class SMO(
                             tmpApp //return
                         }
                     }
-                    //println("APPPP" +app)
                     if (app != null && app.time <= time) {
                         if (flag) {
                             app = calendar.findMinTime()?.first
@@ -117,7 +117,6 @@ class SMO(
                         app.time = devices[freeDevice].getEndTime()
                         stat.devTimeHandled(app.src, devices[freeDevice].handledTime())
                         calendar.addApplication(app, Event.DEVICE)
-
 
                     } else if (app != null) {
                         // если нет заявок, а прибор выбран
@@ -200,4 +199,7 @@ class SMO(
         return time
     }
 
+    fun getStatistics(): MutableList<Statistics> {
+        return stat.getStatistics(sources)
+    }
 }

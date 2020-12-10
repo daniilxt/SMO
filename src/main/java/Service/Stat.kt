@@ -1,7 +1,6 @@
 package Service
 
 import DAO.Statistics
-import java.lang.Exception
 
 class Stat(val src: Int) {
 
@@ -35,22 +34,8 @@ class Stat(val src: Int) {
         countInBuff[source - 1]++
     }
 
-    fun printStat() {
-        for (i in 0 until src) {
-            statObj.add(
-                Statistics(
-                    i.toLong() + 1,
-                    devHandledSources[i].toLong(),
-                    devDeniedSources[i].toDouble() / devHandledSources[i],
-                    timeInBuffer[i].toDouble() / countInBuff[i],
-                    devTimeHandledSources[i].toDouble() / devHandledSources[i],
-                    (devTimeHandledSources[i].toDouble() / devHandledSources[i]) + (timeInBuffer[i].toDouble() / countInBuff[i]),
-                    1.2,
-                    1.1
-
-                )
-            )
-        }
+    fun printStat(sources:List<Source>) {
+        calculateStatistics(sources)
         statObj.forEach { println(it) }
 /*
         devDeniedSources.forEachIndexed { index, i ->
@@ -84,5 +69,28 @@ class Stat(val src: Int) {
             }
         }
     }*/
+    }
+
+    fun getStatistics(sources: List<Source>): MutableList<Statistics> {
+        calculateStatistics(sources)
+        return statObj
+    }
+
+    private fun calculateStatistics(sources: List<Source>) {
+        for (i in 0 until src) {
+            statObj.add(
+                Statistics(
+                    i.toLong() + 1,
+                    sources[i].countApplications(),
+                    devDeniedSources[i].toDouble() / devHandledSources[i],
+                    timeInBuffer[i].toDouble() / countInBuff[i],
+                    devTimeHandledSources[i].toDouble() / devHandledSources[i],
+                    (devTimeHandledSources[i].toDouble() / devHandledSources[i]) + (timeInBuffer[i].toDouble() / countInBuff[i]),
+                    1.2,
+                    1.1
+
+                )
+            )
+        }
     }
 }
